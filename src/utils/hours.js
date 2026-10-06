@@ -12,16 +12,26 @@ const DAY_NAMES = [
   "Saturday",
 ];
 
-// "8:00 am" -> 8, "6:00 pm" -> 18. Salon hours are always on the hour, so we
-// don't need to carry minutes through.
+// "8:30 am" -> { hour: 8, minute: 30 }, "6:00 pm" -> { hour: 18, minute: 0 }.
 export function to24Hour(label) {
   const match = /^(\d+):(\d+)\s*(am|pm)$/i.exec(String(label).trim());
   if (!match) return null;
   let hour = parseInt(match[1], 10);
+  const minute = parseInt(match[2], 10);
   const period = match[3].toLowerCase();
   if (period === "pm" && hour !== 12) hour += 12;
   if (period === "am" && hour === 12) hour = 0;
-  return hour;
+  return { hour, minute };
+}
+
+// "8:30 am" -> 510 (minutes since midnight), for comparing against now.
+function toMinutes(label) {
+  const t = to24Hour(label);
+  return t ? t.hour * 60 + t.minute : null;
+}
+
+function minutesNow(now) {
+  return now.getHours() * 60 + now.getMinutes();
 }
 
 // "8:00 am" -> "8am" (matches the short style used in the hero/footer copy).
@@ -32,10 +42,8 @@ function formatShort(label) {
 export function isOpenNow(hours, now = new Date()) {
   const today = hours[now.getDay()];
   if (!today || !today.open || !today.close) return false;
-  const openHour = to24Hour(today.open);
-  const closeHour = to24Hour(today.close);
-  const h = now.getHours();
-  return h >= openHour && h < closeHour;
+  const m = minutesNow(now);
+  return m >= toMinutes(today.open) && m < toMinutes(today.close);
 }
 
 export function getStatusLabel(hours, now = new Date()) {
@@ -46,7 +54,7 @@ export function getStatusLabel(hours, now = new Date()) {
     return `Open now · until ${formatShort(today.close)}`;
   }
 
-  if (today && today.open && now.getHours() < to24Hour(today.open)) {
+  if (today && today.open && minutesNow(now) < toMinutes(today.open)) {
     return `Closed · opens today ${formatShort(today.open)}`;
   }
 

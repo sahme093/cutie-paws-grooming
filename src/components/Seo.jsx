@@ -4,8 +4,8 @@ import { to24Hour } from "../utils/hours.js";
 
 const SCRIPT_ID = "local-business-jsonld";
 
-function timeString(hour) {
-  return `${String(hour).padStart(2, "0")}:00`;
+function timeString({ hour, minute }) {
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
 /**
@@ -24,7 +24,7 @@ export default function Seo() {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       name: salon.name,
-      image: `${window.location.origin}/assets/logo.webp`,
+      image: `${window.location.origin}${salon.storefront.src}`,
       telephone: salon.phoneDisplay,
       description: salon.description,
       address: {

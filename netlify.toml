@@ -1,3 +1,10 @@
 [build]
   command = "npm run build"
   publish = "dist"
+
+# Keep the site out of Google while it's in preview. Remove this block (and
+# the robots meta tag in index.html) when the site is ready to go live.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

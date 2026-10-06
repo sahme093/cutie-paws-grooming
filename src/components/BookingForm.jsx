@@ -53,7 +53,7 @@ export default function BookingForm() {
     setErrors((e) => ({ ...e, services: undefined }));
   };
 
-  const chosenServices = salon.services[species].filter(
+  const chosenServices = salon.services.filter(
     (s) => selected[`${species}:${s.name}`]
   );
 
@@ -306,7 +306,7 @@ export default function BookingForm() {
           Services *
         </span>
         <div className="chip-group" role="group" aria-labelledby="services-label">
-          {salon.services[species].map((s) => {
+          {salon.services.map((s) => {
             const key = `${species}:${s.name}`;
             return (
               <button
@@ -346,10 +346,11 @@ export default function BookingForm() {
           Preferred drop-off
           <select id="time" value={fields.time} onChange={(e) => setField("time", e.target.value)}>
             <option value="Any time">Any time</option>
-            <option value="8–10 am">8–10 am</option>
+            <option value="8:30–10 am">8:30–10 am</option>
             <option value="10 am–12 pm">10 am–12 pm</option>
             <option value="12–2 pm">12–2 pm</option>
             <option value="2–4 pm">2–4 pm</option>
+            <option value="4–6 pm">4–6 pm</option>
           </select>
         </label>
       </div>

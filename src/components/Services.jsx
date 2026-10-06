@@ -1,18 +1,16 @@
 import { salon } from "../config.js";
 
-function ServiceList({ title, items }) {
+function PawIcon() {
   return (
-    <div className="service-card">
-      <h3>{title}</h3>
-      {items.map((item) => (
-        <div className="service-row" key={item.name}>
-          <span className="service-row__name">{item.name}</span>
-          {salon.showPrices && (
-            <span className="service-row__price">from ${item.price}</span>
-          )}
-        </div>
-      ))}
-    </div>
+    <svg viewBox="0 0 64 64" className="service-card__icon" aria-hidden="true">
+      <g fill="currentColor">
+        <ellipse cx="32" cy="41" rx="11" ry="9" />
+        <ellipse cx="17.5" cy="29" rx="5" ry="6.2" transform="rotate(-18 17.5 29)" />
+        <ellipse cx="26" cy="19.5" rx="5" ry="6.6" transform="rotate(-6 26 19.5)" />
+        <ellipse cx="38" cy="19.5" rx="5" ry="6.6" transform="rotate(6 38 19.5)" />
+        <ellipse cx="46.5" cy="29" rx="5" ry="6.2" transform="rotate(18 46.5 29)" />
+      </g>
+    </svg>
   );
 }
 
@@ -23,13 +21,21 @@ export default function Services() {
         <div className="section-heading">
           <div className="section-heading__text">
             <span className="section-label">Services</span>
-            <h2 className="section-title">From a quick nail trim to the full spa day</h2>
+            <h2 className="section-title">Cuts &amp; care for every cutie</h2>
           </div>
         </div>
 
         <div className="service-groups">
-          <ServiceList title="Dogs" items={salon.services.dog} />
-          <ServiceList title="Cats" items={salon.services.cat} />
+          {salon.services.map((service) => (
+            <div className="service-card" key={service.name}>
+              <PawIcon />
+              <h3>{service.name}</h3>
+              <p className="service-card__text">{service.description}</p>
+              {salon.showPrices && service.price != null && (
+                <span className="service-row__price">from ${service.price}</span>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

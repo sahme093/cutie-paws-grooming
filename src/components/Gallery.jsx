@@ -22,7 +22,13 @@ export default function Gallery() {
             aria-label={`View larger photo: ${photo.alt}`}
             onClick={() => setOpenIndex(index)}
           >
-            <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading="lazy"
+              decoding="async"
+              style={photo.position ? { objectPosition: photo.position } : undefined}
+            />
           </button>
         ))}
       </div>

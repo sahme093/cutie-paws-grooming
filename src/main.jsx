@@ -10,6 +10,8 @@ import "./index.css";
 Object.entries(salon.colors).forEach(([key, value]) => {
   document.documentElement.style.setProperty(`--color-${key}`, value);
 });
+document.documentElement.style.setProperty("--font-display", salon.fonts.display);
+document.documentElement.style.setProperty("--font-body", salon.fonts.body);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
